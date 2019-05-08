@@ -1,0 +1,13 @@
+{
+    "server": {
+        "local": {
+            "type": "local",
+            "path": "~/log/nohup.out"
+        },
+        "dev": {
+            "type": "remote",
+            "ssh": "dev",
+            "path": "~/log/nohup.out"
+        }
+    }
+}
