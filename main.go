@@ -70,6 +70,7 @@ func main() {
 	defer l.Close()
 	log.SetOutput(l.Stderr())
 	log.SetFlags(log.LstdFlags | log.Lshortfile)
+	outerloop:
 	for {
 		line, err := l.Readline()
 		if err == readline.ErrInterrupt {
@@ -93,8 +94,7 @@ func main() {
 			serverName := strings.TrimSpace(line[len(tracecheck):])
 			printer.Tracecheck(serverName)
 		case strings.HasPrefix(line, quit[:1]):
-			goto exit
+			break outerloop;
 		}
 	}
-exit:
 }
