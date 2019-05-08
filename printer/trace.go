@@ -11,20 +11,24 @@ import (
 func trace(reader io.Reader, source string) {
 	scanner := bufio.NewScanner(reader)
 	prev := ""
-	trace := false
+	block := false
 	for scanner.Scan() {
 		line := scanner.Text()
-		if line == "stack traceback:" || strings.HasPrefix(line, "\t") {
-			if !trace {
-				trace = true
+		if line == "stack traceback:" {
+			if !block {
+				block = true
 				if len(source) > 0 {
 					color.Comment.Printf(source)
 				}
 				color.Danger.Println(prev)
 			}
 			color.Note.Println(line)
+		} else if strings.HasPrefix(line, "\t") {
+			if block {
+				color.Note.Println(line)
+			}
 		} else {
-			trace = false
+			block = false
 		}
 		prev = line
 	}
